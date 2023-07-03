@@ -36,6 +36,7 @@ run();
 
 
 const Services =  client.db("reviewDb").collection("services");
+const Reviews = client.db("reviewDb").collection("reviews")
 
 // creating different api connection link
 
@@ -61,7 +62,7 @@ app.get('/services', async(req, res)=>{
         })
     }
 })
-// For showing all Services 
+// For getting all Services 
 app.get('/allServices', async(req, res)=>{
     try {
         const query ={}
@@ -116,6 +117,48 @@ app.post('/services', async (req, res) =>{
     })
    }
 
+})
+
+
+// Review Get
+app.get('/reviews', async(req, res)=>{
+    try {
+        const query = req.query._id; 
+        
+        console.log(query)
+
+        const result = await Reviews.find(query).toArray();
+        res.send({
+            success:true,
+            message: 'data loaded successfully',
+            data: result,
+        })
+        
+    } catch (error) {
+        res.send({
+            success:false,
+            error: error.message
+        })
+    }
+})
+
+// Review post 
+app.post('/reviews', async (req, res) =>{
+    try {
+        const doc = req.body;
+        const result = await Reviews.insertOne(doc)
+        res.send({
+            success: true,
+            message: 'Thank you for your post',
+            data: result
+        })
+    } catch (error) {
+        res.send({
+            success: false,
+            error: error.message,
+        })
+        
+    }
 })
 
 

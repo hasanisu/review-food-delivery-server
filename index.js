@@ -121,12 +121,10 @@ app.post('/services', async (req, res) =>{
 
 
 // Review Get
-app.get('/reviews', async(req, res)=>{
+app.get('/reviews/:id', async(req, res)=>{
     try {
-        const query = req.query._id; 
-        
-        console.log(query)
-
+         const service = req.params.id;
+         const query = {service: service}
         const result = await Reviews.find(query).toArray();
         res.send({
             success:true,

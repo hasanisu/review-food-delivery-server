@@ -120,11 +120,32 @@ app.post('/services', async (req, res) =>{
 })
 
 
-// Review Get
+// get review from email
+app.get('/reviews', async(req, res)=>{
+    try {
+        const  query = {userEmail: req.query.email};
+        console.log(query)
+        const cursor = Reviews.find(query)
+        const result = await cursor.toArray();
+        
+        res.send({
+            success:true,
+            message: 'data loaded successfully',
+            data: result,
+        })
+        
+    } catch (error) {
+        res.send({
+            success:false,
+            error: error.message
+        })
+    }
+})
+
 app.get('/reviews/:id', async(req, res)=>{
     try {
-         const service = req.params.id;
-         const query = {service: service}
+         const service_id = req.params.id;
+         const query = {service_id: service_id}
         const result = await Reviews.find(query).toArray();
         res.send({
             success:true,

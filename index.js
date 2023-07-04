@@ -180,6 +180,50 @@ app.post('/reviews', async (req, res) =>{
     }
 })
 
+// update reviews
+app.get('/reviewsId/:id', async(req, res)=>{
+    try {
+        const {id} = req.params;
+        const query ={_id: new ObjectId(id)}
+        console.log(query)
+        const result = Reviews.findOne(query);
+        res.send({
+            success: true,
+            message: 'successfully find this service review',
+            data: result
+        })
+        
+        
+    } catch (error) {
+        
+    }
+})
+
+app.put('/reviews/:id', async(req, res) =>{
+    try {
+        const {id} = req.params;
+    const filter = {_id: new ObjectId(id)}
+    const updateReview = req.body;
+    const reviews = {
+        $set:{
+            rating:updateReview.rating,
+            review:updateReview.review
+        }
+    }
+    const result = await Reviews.updateOne(filter, reviews);
+    console.log(result)
+    res.send({
+        success: true,
+        message:'successfully updated',
+        data: result,
+    })
+        
+    } catch (error) {
+        
+    }
+
+})
+
 
 
 

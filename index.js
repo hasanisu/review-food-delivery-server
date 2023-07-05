@@ -124,7 +124,6 @@ app.post('/services', async (req, res) =>{
 app.get('/reviews', async(req, res)=>{
     try {
         const  query = {userEmail: req.query.email};
-        console.log(query)
         const cursor = Reviews.find(query)
         const result = await cursor.toArray();
         
@@ -142,6 +141,7 @@ app.get('/reviews', async(req, res)=>{
     }
 })
 
+// get review by particular id
 app.get('/reviews/:id', async(req, res)=>{
     try {
          const service_id = req.params.id;
@@ -181,12 +181,11 @@ app.post('/reviews', async (req, res) =>{
 })
 
 // update reviews
-app.get('/reviewsId/:id', async(req, res)=>{
+app.get('/reviewsid/:id', async(req, res)=>{
     try {
-        const {id} = req.params;
+        const id = req.params.id;
         const query ={_id: new ObjectId(id)}
-        console.log(query)
-        const result = Reviews.findOne(query);
+        const result = await Reviews.findOne(query);
         res.send({
             success: true,
             message: 'successfully find this service review',
@@ -199,18 +198,20 @@ app.get('/reviewsId/:id', async(req, res)=>{
     }
 })
 
-app.put('/reviews/:id', async(req, res) =>{
+app.patch('/reviews/:id', async(req, res) =>{
     try {
-        const {id} = req.params;
+        const id = req.params.id;
     const filter = {_id: new ObjectId(id)}
-    const updateReview = req.body;
-    const reviews = {
+    const options = { upsert: true };
+    const docReview = req.body;
+    console.log(filter, docReview)
+    const reviewsDoc = {
         $set:{
-            rating:updateReview.rating,
-            review:updateReview.review
+            rating:docReview.rating,
+            review:docReview.review,
         }
     }
-    const result = await Reviews.updateOne(filter, reviews);
+    const result = await Reviews.updateOne(filter, reviewsDoc, options);
     console.log(result)
     res.send({
         success: true,

@@ -225,6 +225,22 @@ app.patch('/reviews/:id', async(req, res) =>{
 
 })
 
+app.delete('/reviews/:id', async(req,res)=>{
+    try {
+        const id = req.params.id;
+        const query= {_id: new ObjectId(id)}
+        const result = await Reviews.deleteOne(query);
+        res.send({
+            success: true,
+            message: 'succesfully deleted',
+            data: result,
+        })
+        
+    } catch (error) {
+        
+    }
+})
+
 
 
 

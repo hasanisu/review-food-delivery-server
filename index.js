@@ -145,8 +145,10 @@ app.get('/reviews', async(req, res)=>{
 app.get('/reviews/:id', async(req, res)=>{
     try {
          const service_id = req.params.id;
-         const query = {service_id: service_id}
-        const result = await Reviews.find(query).toArray();
+         const query = {service_id: service_id  }
+         const data = {data_added: {$gt: new Date()}}
+         const result = await Reviews.find(query, data).toArray();
+         console.log(data)
         res.send({
             success:true,
             message: 'data loaded successfully',
@@ -166,6 +168,7 @@ app.post('/reviews', async (req, res) =>{
     try {
         const doc = req.body;
         const result = await Reviews.insertOne(doc)
+        console.log(result)
         res.send({
             success: true,
             message: 'Thank you for your post',

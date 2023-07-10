@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const app = express();
 require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const { JsonWebTokenError } = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
 require("colors");
 
@@ -59,7 +58,7 @@ function verifyJWT(req, res, next) {
 app.post("/jwt", (req, res) => {
   const user = req.body;
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1m",
+    expiresIn: "1day",
   });
   res.send({ token });
 });
